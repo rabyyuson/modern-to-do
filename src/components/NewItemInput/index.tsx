@@ -1,14 +1,20 @@
 import React, { BaseSyntheticEvent } from 'react'
 
 const NewItemInput = ({
-  handleOnBlur
+  handleOnChange,
+  handleOnBlur,
+  setTextInputRef,
 }: {
-  handleOnBlur: (event: BaseSyntheticEvent) => void
+  handleOnChange: (event: BaseSyntheticEvent) => void;
+  handleOnBlur: (event: BaseSyntheticEvent) => void;
+  setTextInputRef: (element: HTMLInputElement) => void;
 }) => {
   return (
     <div className="NewItemInput">
       <input
+        ref={setTextInputRef}
         type="text"
+        onChange={handleOnChange}
         onBlur={handleOnBlur}
       />
     </div>
