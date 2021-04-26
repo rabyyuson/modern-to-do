@@ -1,20 +1,15 @@
 import React from 'react'
+import Todo from './components/Todo'
 import './App.scss'
 
-class App extends React.Component {
-  constructor(props: any) {
-    super(props)
-  }
-
-  render() {
-    return (
-      <>
-        <div className="App">
-          To Do
-        </div>
-      </>
-    )
-  }
+const App = () => {
+  return (
+    <>
+      <div className="App">
+        <Todo />
+      </div>
+    </>
+  )
 }
 
 export default App
