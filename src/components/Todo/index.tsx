@@ -30,20 +30,12 @@ class Todo extends React.Component<{}, TodoState> {
   }
 
   handleOnChange(event: BaseSyntheticEvent) {
-    const {
-      value,
-    } = event.target
-
-    this.setState({
-      text: value,
-    })
+    const { value } = event.target
+    this.setState({ text: value })
   }
 
-  handleOnBlur(event: BaseSyntheticEvent) {
-    const {
-      text,
-    } = this.state
-
+  handleOnBlur() {
+    const { text } = this.state
     if (!text) {
       return
     }
@@ -52,11 +44,9 @@ class Todo extends React.Component<{}, TodoState> {
   }
 
   handleOnKeydown(event: KeyboardEvent) {
-    const {
-      text,
-    } = this.state
-
-    const isEnterKeyPressed = event.key === 'Enter'
+    const { text } = this.state
+    const { key } = event
+    const isEnterKeyPressed = key === 'Enter'
     if (!text || !isEnterKeyPressed) {
       return
     }
@@ -77,10 +67,7 @@ class Todo extends React.Component<{}, TodoState> {
       text: '',
     })
 
-    const {
-      newItemInput,
-    } = this
-
+    const { newItemInput } = this
     if (!newItemInput) {
       return
     }
@@ -93,9 +80,7 @@ class Todo extends React.Component<{}, TodoState> {
   }
 
   render() {
-    const {
-      items
-    } = this.state
+    const { items } = this.state
 
     return (
       <div className="Todo">
