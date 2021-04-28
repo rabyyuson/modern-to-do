@@ -5,7 +5,8 @@ import List from '../List'
 import NewItem from '../NewItem'
 
 class Todo extends React.Component<{}, TodoState> {
-  newItemInput: HTMLInputElement | null
+  listItemEditInput: HTMLInputElement | null;
+  newItemInput: HTMLInputElement | null;
 
   constructor(props: any) {
     super(props)
@@ -18,9 +19,11 @@ class Todo extends React.Component<{}, TodoState> {
     this.handleOnKeydown = this.handleOnKeydown.bind(this)
 
     this.addTodoItem = this.addTodoItem.bind(this)
+    this.setListItemEditInputRef = this.setListItemEditInputRef.bind(this)
     this.setNewItemInputRef = this.setNewItemInputRef.bind(this)
 
     this.newItemInput = null
+    this.listItemEditInput = null
 
     this.state = {
       items: [],
@@ -81,7 +84,6 @@ class Todo extends React.Component<{}, TodoState> {
     } = this.state
 
     items.push(text)
-
     this.setState({
       items,
       text: '',
@@ -93,6 +95,10 @@ class Todo extends React.Component<{}, TodoState> {
     }
     
     newItemInput.value = ''
+  }
+
+  setListItemEditInputRef(element: HTMLInputElement | null) {
+    this.listItemEditInput = element
   }
 
   setNewItemInputRef(element: HTMLInputElement | null) {
@@ -109,6 +115,7 @@ class Todo extends React.Component<{}, TodoState> {
           handleListItemComplete={this.handleListItemComplete}
           handleListItemRemove={this.handleListItemRemove}
           handleListItemSelect={this.handleListItemSelect}
+          setListItemEditInputRef={this.setListItemEditInputRef}
           items={items}
         />
         <NewItem

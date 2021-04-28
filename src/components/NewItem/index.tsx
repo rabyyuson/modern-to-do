@@ -12,7 +12,7 @@ const NewItem = ({
   return (
     <div className="NewItem">
       <div className="NewItem-create">
-        <div className="NewItem-create-icon">[Add Icon]</div>
+        <div className="NewItem-create-icon">( + )</div>
         <div className="NewItem-create-label">Create New Item</div>
       </div>
       <div className="NewItem-input">

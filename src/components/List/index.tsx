@@ -4,11 +4,13 @@ const List = ({
   handleListItemComplete,
   handleListItemRemove,
   handleListItemSelect,
+  setListItemEditInputRef,
   items
 }: {
   handleListItemComplete: (event: BaseSyntheticEvent) => void;
   handleListItemRemove: (event: BaseSyntheticEvent) => void;
   handleListItemSelect: (event: BaseSyntheticEvent) => void;
+  setListItemEditInputRef: (element: HTMLInputElement | null) => void;
   items: [string?]
 }) => {
   return (
@@ -22,7 +24,7 @@ const List = ({
                 className="List-item-complete"
                 onClick={handleListItemComplete}
               >
-                [Complete Icon]
+                ( ✔ )
               </div>
               <div
                 data-index={index}
@@ -33,10 +35,19 @@ const List = ({
               </div>
               <div
                 data-index={index}
+                className="List-item-edit"
+              >
+                <input
+                  ref={setListItemEditInputRef}
+                  type="text"
+                ></input>
+              </div>
+              <div
+                data-index={index}
                 className="List-item-remove"
                 onClick={handleListItemRemove}
               >
-                [Remove Icon]
+                ( X )
               </div>
             </li>
           )
