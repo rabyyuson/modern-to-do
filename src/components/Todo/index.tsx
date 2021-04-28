@@ -2,7 +2,7 @@ import React, { BaseSyntheticEvent } from 'react'
 import { TodoState } from '../interfaces'
 import Calendar from '../Calendar'
 import List from '../List'
-import NewItemInput from '../NewItemInput'
+import NewItem from '../NewItem'
 
 class Todo extends React.Component<{}, TodoState> {
   newItemInput: HTMLInputElement | null
@@ -10,12 +10,15 @@ class Todo extends React.Component<{}, TodoState> {
   constructor(props: any) {
     super(props)
 
-    this.handleOnChange = this.handleOnChange.bind(this)
-    this.handleOnBlur = this.handleOnBlur.bind(this)
+    this.handleNewItemInputOnChange = this.handleNewItemInputOnChange.bind(this)
+    this.handleNewItemInputOnBlur = this.handleNewItemInputOnBlur.bind(this)
+    this.handleListItemComplete = this.handleListItemComplete.bind(this)
+    this.handleListItemSelect = this.handleListItemSelect.bind(this)
+    this.handleListItemRemove = this.handleListItemRemove.bind(this)
     this.handleOnKeydown = this.handleOnKeydown.bind(this)
 
     this.addTodoItem = this.addTodoItem.bind(this)
-    this.setTextInputRef = this.setTextInputRef.bind(this)
+    this.setNewItemInputRef = this.setNewItemInputRef.bind(this)
 
     this.newItemInput = null
 
@@ -29,18 +32,35 @@ class Todo extends React.Component<{}, TodoState> {
     window.addEventListener('keydown', this.handleOnKeydown)
   }
 
-  handleOnChange(event: BaseSyntheticEvent) {
+  handleNewItemInputOnChange(event: BaseSyntheticEvent) {
     const { value } = event.target
     this.setState({ text: value })
   }
 
-  handleOnBlur() {
+  handleNewItemInputOnBlur() {
     const { text } = this.state
     if (!text) {
       return
     }
 
     this.addTodoItem()
+  }
+
+  handleListItemComplete(event: BaseSyntheticEvent) {
+    console.log(event)
+  }
+
+  handleListItemRemove(event: BaseSyntheticEvent) {
+    const { dataset } = event.target
+    const { index } = dataset
+    const { items } = this.state
+
+    items.splice(index, 1)
+    this.setState({ items })
+  }
+
+  handleListItemSelect(event: BaseSyntheticEvent) {
+    console.log(event)
   }
 
   handleOnKeydown(event: KeyboardEvent) {
@@ -75,7 +95,7 @@ class Todo extends React.Component<{}, TodoState> {
     newItemInput.value = ''
   }
 
-  setTextInputRef(element: HTMLInputElement) {
+  setNewItemInputRef(element: HTMLInputElement | null) {
     this.newItemInput = element
   }
 
@@ -86,12 +106,15 @@ class Todo extends React.Component<{}, TodoState> {
       <div className="Todo">
         <Calendar />
         <List
+          handleListItemComplete={this.handleListItemComplete}
+          handleListItemRemove={this.handleListItemRemove}
+          handleListItemSelect={this.handleListItemSelect}
           items={items}
         />
-        <NewItemInput
-          handleOnChange={this.handleOnChange}
-          handleOnBlur={this.handleOnBlur}
-          setTextInputRef={this.setTextInputRef}
+        <NewItem
+          handleNewItemInputOnChange={this.handleNewItemInputOnChange}
+          handleNewItemInputOnBlur={this.handleNewItemInputOnBlur}
+          setNewItemInputRef={this.setNewItemInputRef}
         />
       </div>
     )
