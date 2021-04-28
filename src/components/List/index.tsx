@@ -11,31 +11,39 @@ const List = ({
   handleListItemRemove: (event: BaseSyntheticEvent) => void;
   handleListItemSelect: (event: BaseSyntheticEvent) => void;
   setListItemEditInputRef: (element: HTMLInputElement | null) => void;
-  items: [string?]
+  items: {
+    completed: [string?];
+    inProgress: [string?];
+  }
 }) => {
+  const {
+    completed,
+    inProgress,
+  } = items
+
   return (
     <div className="List">
-      <ul>
-        {items.map((item, index) => {
+      <ul className="List-in-progress">
+        {inProgress.map((item, index) => {
           return (
             <li key={index}>
               <div
                 data-index={index}
-                className="List-item-complete"
+                className="List-in-progress-item-complete"
                 onClick={handleListItemComplete}
               >
                 ( ✔ )
               </div>
               <div
                 data-index={index}
-                className="List-item-select"
+                className="List-in-progress-item-select"
                 onClick={handleListItemSelect}
               >
                 {item}
               </div>
               <div
                 data-index={index}
-                className="List-item-edit"
+                className="List-in-progress-item-edit"
               >
                 <input
                   ref={setListItemEditInputRef}
@@ -44,7 +52,7 @@ const List = ({
               </div>
               <div
                 data-index={index}
-                className="List-item-remove"
+                className="List-in-progress-item-remove"
                 onClick={handleListItemRemove}
               >
                 ( X )

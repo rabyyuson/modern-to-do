@@ -26,7 +26,10 @@ class Todo extends React.Component<{}, TodoState> {
     this.listItemEditInput = null
 
     this.state = {
-      items: [],
+      items: {
+        completed: [],
+        inProgress: [],
+      },
       text: '',
     }
   }
@@ -57,8 +60,9 @@ class Todo extends React.Component<{}, TodoState> {
     const { dataset } = event.target
     const { index } = dataset
     const { items } = this.state
+    const { inProgress } = items
 
-    items.splice(index, 1)
+    inProgress.splice(index, 1)
     this.setState({ items })
   }
 
@@ -82,10 +86,17 @@ class Todo extends React.Component<{}, TodoState> {
       items,
       text,
     } = this.state
+    const {
+      completed,
+      inProgress,
+    } = items 
 
-    items.push(text)
+    inProgress.push(text)
     this.setState({
-      items,
+      items: {
+        completed,
+        inProgress,
+      },
       text: '',
     })
 
