@@ -1,0 +1,11 @@
+.List {
+  &-completed,
+  &-in-progress {
+    list-style-type: none;
+
+    &-item {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+}

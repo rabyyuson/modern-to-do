@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent } from 'react'
+import { BaseSyntheticEvent } from 'react'
 
 const NewItem = ({
   handleNewItemInputOnChange,

@@ -13,8 +13,8 @@ class Todo extends React.Component<{}, TodoState> {
 
     this.handleNewItemInputOnChange = this.handleNewItemInputOnChange.bind(this)
     this.handleNewItemInputOnBlur = this.handleNewItemInputOnBlur.bind(this)
+    this.handleListItemEditOnChange = this.handleListItemEditOnChange.bind(this)
     this.handleListItemComplete = this.handleListItemComplete.bind(this)
-    this.handleListItemSelect = this.handleListItemSelect.bind(this)
     this.handleListItemRemove = this.handleListItemRemove.bind(this)
     this.handleOnKeydown = this.handleOnKeydown.bind(this)
 
@@ -30,7 +30,7 @@ class Todo extends React.Component<{}, TodoState> {
         completed: [],
         inProgress: [],
       },
-      text: '',
+      newItem: '',
     }
   }
 
@@ -38,14 +38,56 @@ class Todo extends React.Component<{}, TodoState> {
     window.addEventListener('keydown', this.handleOnKeydown)
   }
 
+  addTodoItem() {
+    const { newItem } = this.state
+    const { newItemInput } = this
+    if (!newItem || !newItemInput) {
+      return
+    }
+
+    const {
+      inProgress,
+      ...rest
+    } = this.state.items
+
+    inProgress.push(newItem)
+    this.setState({
+      items: {
+        inProgress,
+        ...rest,
+      },
+      newItem: '',
+    })
+
+    newItemInput.value = ''
+  }
+
+  handleListItemEditOnChange(event: BaseSyntheticEvent) {
+    const { index } = event.target.dataset
+    const { value } = event.target
+    const {
+      inProgress,
+      ...rest
+    } = this.state.items
+
+    let inProgressEdited = inProgress.slice()
+    inProgressEdited[index] = value
+    this.setState({
+      items: {
+        inProgress: inProgressEdited,
+        ...rest
+      }
+    })
+  }
+
   handleNewItemInputOnChange(event: BaseSyntheticEvent) {
     const { value } = event.target
-    this.setState({ text: value })
+    this.setState({ newItem: value })
   }
 
   handleNewItemInputOnBlur() {
-    const { text } = this.state
-    if (!text) {
+    const { newItem } = this.state
+    if (!newItem) {
       return
     }
 
@@ -53,59 +95,43 @@ class Todo extends React.Component<{}, TodoState> {
   }
 
   handleListItemComplete(event: BaseSyntheticEvent) {
-    console.log(event)
-  }
+    const { completed, inProgress } = this.state.items
+    const { index } = event.target.dataset
 
-  handleListItemRemove(event: BaseSyntheticEvent) {
-    const { dataset } = event.target
-    const { index } = dataset
-    const { items } = this.state
-    const { inProgress } = items
-
+    completed.push(inProgress[index])
     inProgress.splice(index, 1)
-    this.setState({ items })
-  }
 
-  handleListItemSelect(event: BaseSyntheticEvent) {
-    console.log(event)
-  }
-
-  handleOnKeydown(event: KeyboardEvent) {
-    const { text } = this.state
-    const { key } = event
-    const isEnterKeyPressed = key === 'Enter'
-    if (!text || !isEnterKeyPressed) {
-      return
-    }
-
-    this.addTodoItem()
-  }
-
-  addTodoItem() {
-    const {
-      items,
-      text,
-    } = this.state
-    const {
-      completed,
-      inProgress,
-    } = items 
-
-    inProgress.push(text)
     this.setState({
       items: {
         completed,
         inProgress,
-      },
-      text: '',
+      }
     })
+  }
 
-    const { newItemInput } = this
-    if (!newItemInput) {
+  handleListItemRemove(event: BaseSyntheticEvent) {
+    const { index } = event.target.dataset
+    const { completed, inProgress } = this.state.items
+
+    inProgress.splice(index, 1)
+
+    this.setState({
+      items: {
+        completed,
+        inProgress,
+      }
+    })
+  }
+
+  handleOnKeydown(event: KeyboardEvent) {
+    const { newItem } = this.state
+    const { key } = event
+    const isEnterKeyPressed = key === 'Enter'
+    if (!newItem || !isEnterKeyPressed) {
       return
     }
-    
-    newItemInput.value = ''
+
+    this.addTodoItem()
   }
 
   setListItemEditInputRef(element: HTMLInputElement | null) {
@@ -123,11 +149,11 @@ class Todo extends React.Component<{}, TodoState> {
       <div className="Todo">
         <Calendar />
         <List
+          items={items}
+          handleListItemEditOnChange={this.handleListItemEditOnChange}
           handleListItemComplete={this.handleListItemComplete}
           handleListItemRemove={this.handleListItemRemove}
-          handleListItemSelect={this.handleListItemSelect}
           setListItemEditInputRef={this.setListItemEditInputRef}
-          items={items}
         />
         <NewItem
           handleNewItemInputOnChange={this.handleNewItemInputOnChange}

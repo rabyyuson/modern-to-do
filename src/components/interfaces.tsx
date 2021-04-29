@@ -1,7 +1,7 @@
 export interface TodoState {
   items: {
-    completed: [string?];
-    inProgress: [string?];
+    completed: (string | undefined)[];
+    inProgress: (string | undefined)[];
   };
-  text: string;
+  newItem: string | undefined;
 }
