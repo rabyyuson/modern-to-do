@@ -29,6 +29,7 @@ class Todo extends React.Component<{}, TodoState> {
       items: {
         completed: [],
         inProgress: [],
+        removed: [],
       },
       newItem: '',
     }
@@ -72,10 +73,41 @@ class Todo extends React.Component<{}, TodoState> {
 
     let inProgressEdited = inProgress.slice()
     inProgressEdited[index] = value
+
     this.setState({
       items: {
         inProgress: inProgressEdited,
         ...rest
+      }
+    })
+  }
+
+  handleListItemComplete(event: BaseSyntheticEvent) {
+    const { completed, inProgress, removed } = this.state.items
+    const { index } = event.target.dataset
+
+    completed.push(inProgress[index])
+
+    this.setState({
+      items: {
+        completed,
+        inProgress,
+        removed,
+      }
+    })
+  }
+
+  handleListItemRemove(event: BaseSyntheticEvent) {
+    const { index } = event.target.dataset
+    const { completed, inProgress, removed } = this.state.items
+
+    removed.push(inProgress[index])
+
+    this.setState({
+      items: {
+        completed,
+        inProgress,
+        removed,
       }
     })
   }
@@ -92,35 +124,6 @@ class Todo extends React.Component<{}, TodoState> {
     }
 
     this.addTodoItem()
-  }
-
-  handleListItemComplete(event: BaseSyntheticEvent) {
-    const { completed, inProgress } = this.state.items
-    const { index } = event.target.dataset
-
-    completed.push(inProgress[index])
-    inProgress.splice(index, 1)
-
-    this.setState({
-      items: {
-        completed,
-        inProgress,
-      }
-    })
-  }
-
-  handleListItemRemove(event: BaseSyntheticEvent) {
-    const { index } = event.target.dataset
-    const { completed, inProgress } = this.state.items
-
-    inProgress.splice(index, 1)
-
-    this.setState({
-      items: {
-        completed,
-        inProgress,
-      }
-    })
   }
 
   handleOnKeydown(event: KeyboardEvent) {

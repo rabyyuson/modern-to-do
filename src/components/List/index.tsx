@@ -1,3 +1,5 @@
+import classNames from 'classnames'
+
 import { BaseSyntheticEvent } from 'react'
 import './index.scss'
 
@@ -15,19 +17,23 @@ const List = ({
   items: {
     completed: (string | undefined)[];
     inProgress: (string | undefined)[];
+    removed: (string | undefined)[];
   }
 }) => {
-  const {
-    completed,
-    inProgress,
-  } = items
+  const { completed, inProgress, removed } = items
+
+  console.log('items',items)
 
   return (
     <div className="List">
       <ul className="List-in-progress">
         {inProgress.map((item, index) => (
           <li
-            className="List-in-progress-item"
+            className={classNames(
+              "List-in-progress-item",
+              completed.includes(item) && "List-in-progress-completed",
+              removed.includes(item) && "List-in-progress-removed"
+            )}
             key={index}
           >
             <div
@@ -35,7 +41,7 @@ const List = ({
               className="List-in-progress-item-complete"
               onClick={handleListItemComplete}
             >
-              ( )
+              ( o )
             </div>
             <div className="List-in-progress-item-edit">
               <input
