@@ -16,6 +16,7 @@ class Todo extends React.Component<{}, TodoState> {
     this.handleListItemEditOnChange = this.handleListItemEditOnChange.bind(this)
     this.handleListItemComplete = this.handleListItemComplete.bind(this)
     this.handleListItemRemove = this.handleListItemRemove.bind(this)
+    this.handleListItemRemovedRestore = this.handleListItemRemovedRestore.bind(this)
     this.handleOnKeydown = this.handleOnKeydown.bind(this)
 
     this.addTodoItem = this.addTodoItem.bind(this)
@@ -71,7 +72,7 @@ class Todo extends React.Component<{}, TodoState> {
       ...rest
     } = this.state.items
 
-    let inProgressEdited = inProgress.slice()
+    const inProgressEdited = inProgress.slice()
     inProgressEdited[index] = value
 
     this.setState({
@@ -83,7 +84,7 @@ class Todo extends React.Component<{}, TodoState> {
   }
 
   handleListItemComplete(event: BaseSyntheticEvent) {
-    const { completed, inProgress, removed } = this.state.items
+    const { completed, inProgress, ...rest } = this.state.items
     const { index } = event.target.dataset
 
     completed.push(inProgress[index])
@@ -92,22 +93,36 @@ class Todo extends React.Component<{}, TodoState> {
       items: {
         completed,
         inProgress,
-        removed,
+        ...rest,
       }
     })
   }
 
   handleListItemRemove(event: BaseSyntheticEvent) {
     const { index } = event.target.dataset
-    const { completed, inProgress, removed } = this.state.items
+    const { inProgress, removed, ...rest } = this.state.items
 
     removed.push(inProgress[index])
 
     this.setState({
       items: {
-        completed,
         inProgress,
         removed,
+        ...rest
+      }
+    })
+  }
+
+  handleListItemRemovedRestore(event: BaseSyntheticEvent) {
+    const { index } = event.target.dataset
+    const { removed, ...rest } = this.state.items
+
+    removed.splice(index, 1)
+
+    this.setState({
+      items: {
+        removed,
+        ...rest
       }
     })
   }
@@ -156,6 +171,7 @@ class Todo extends React.Component<{}, TodoState> {
           handleListItemEditOnChange={this.handleListItemEditOnChange}
           handleListItemComplete={this.handleListItemComplete}
           handleListItemRemove={this.handleListItemRemove}
+          handleListItemRemovedRestore={this.handleListItemRemovedRestore}
           setListItemEditInputRef={this.setListItemEditInputRef}
         />
         <NewItem

@@ -1,6 +1,7 @@
 .List {
   &-completed,
-  &-in-progress {
+  &-in-progress,
+  &-removed {
     list-style-type: none;
 
     &-item {

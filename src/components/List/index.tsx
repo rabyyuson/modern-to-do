@@ -7,12 +7,14 @@ const List = ({
   handleListItemEditOnChange,
   handleListItemComplete,
   handleListItemRemove,
+  handleListItemRemovedRestore,
   setListItemEditInputRef,
   items
 }: {
   handleListItemEditOnChange: (event: BaseSyntheticEvent) => void;
   handleListItemComplete: (event: BaseSyntheticEvent) => void;
   handleListItemRemove: (event: BaseSyntheticEvent) => void;
+  handleListItemRemovedRestore: (event: BaseSyntheticEvent) => void;
   setListItemEditInputRef: (element: HTMLInputElement | null) => void;
   items: {
     completed: (string | undefined)[];
@@ -21,8 +23,6 @@ const List = ({
   }
 }) => {
   const { completed, inProgress, removed } = items
-
-  console.log('items',items)
 
   return (
     <div className="List">
@@ -72,6 +72,25 @@ const List = ({
               ( ✔ )
             </div>
             <div className="List-completed-item-label">
+              {item}
+            </div>
+          </li>
+        ))}
+      </ul>
+      <ul className="List-removed">
+        {removed.map((item, index) => (
+          <li
+            className="List-removed-item"
+            key={index}
+          >
+            <div
+              data-index={index}
+              className="List-removed-item-trash"
+              onClick={handleListItemRemovedRestore}
+            >
+              ( + )
+            </div>
+            <div className="List-removed-item-label">
               {item}
             </div>
           </li>
