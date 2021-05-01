@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent } from 'react'
+import React, { BaseSyntheticEvent, ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent } from 'react'
 import { TodoState } from '../interfaces'
 import Calendar from '../Calendar'
 import List from '../List'
@@ -8,16 +8,16 @@ class Todo extends React.Component<{}, TodoState> {
   listItemEditInput: HTMLInputElement | null;
   newItemInput: HTMLInputElement | null;
 
-  constructor(props: any) {
+  constructor(props: {}) {
     super(props)
 
     this.handleNewItemInputOnChange = this.handleNewItemInputOnChange.bind(this)
     this.handleNewItemInputOnBlur = this.handleNewItemInputOnBlur.bind(this)
+    this.handleNewItemInputOnKeyUp = this.handleNewItemInputOnKeyUp.bind(this)
     this.handleListItemEditOnChange = this.handleListItemEditOnChange.bind(this)
     this.handleListItemComplete = this.handleListItemComplete.bind(this)
     this.handleListItemRemove = this.handleListItemRemove.bind(this)
     this.handleListItemRemovedRestore = this.handleListItemRemovedRestore.bind(this)
-    this.handleOnKeydown = this.handleOnKeydown.bind(this)
 
     this.addTodoItem = this.addTodoItem.bind(this)
     this.setListItemEditInputRef = this.setListItemEditInputRef.bind(this)
@@ -36,10 +36,6 @@ class Todo extends React.Component<{}, TodoState> {
     }
   }
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleOnKeydown)
-  }
-
   addTodoItem() {
     const { newItem } = this.state
     const { newItemInput } = this
@@ -47,10 +43,7 @@ class Todo extends React.Component<{}, TodoState> {
       return
     }
 
-    const {
-      inProgress,
-      ...rest
-    } = this.state.items
+    const { inProgress, ...rest } = this.state.items
 
     inProgress.push(newItem)
     this.setState({
@@ -65,15 +58,12 @@ class Todo extends React.Component<{}, TodoState> {
   }
 
   handleListItemEditOnChange(event: BaseSyntheticEvent) {
+    console.log(event)
     const { index } = event.target.dataset
     const { value } = event.target
-    const {
-      inProgress,
-      ...rest
-    } = this.state.items
+    const { inProgress, ...rest } = this.state.items
 
     inProgress[index] = value
-
     this.setState({
       items: {
         inProgress,
@@ -87,7 +77,6 @@ class Todo extends React.Component<{}, TodoState> {
     const { index } = event.target.dataset
 
     completed.push(inProgress[index])
-
     this.setState({
       items: {
         completed,
@@ -102,7 +91,6 @@ class Todo extends React.Component<{}, TodoState> {
     const { inProgress, removed, ...rest } = this.state.items
 
     removed.push(inProgress[index])
-
     this.setState({
       items: {
         inProgress,
@@ -117,7 +105,6 @@ class Todo extends React.Component<{}, TodoState> {
     const { removed, ...rest } = this.state.items
 
     removed.splice(index, 1)
-
     this.setState({
       items: {
         removed,
@@ -126,12 +113,12 @@ class Todo extends React.Component<{}, TodoState> {
     })
   }
 
-  handleNewItemInputOnChange(event: BaseSyntheticEvent) {
+  handleNewItemInputOnChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target
     this.setState({ newItem: value })
   }
 
-  handleNewItemInputOnBlur() {
+  handleNewItemInputOnBlur(event: FocusEvent<HTMLInputElement>) {
     const { newItem } = this.state
     if (!newItem) {
       return
@@ -140,7 +127,7 @@ class Todo extends React.Component<{}, TodoState> {
     this.addTodoItem()
   }
 
-  handleOnKeydown(event: KeyboardEvent) {
+  handleNewItemInputOnKeyUp(event: KeyboardEvent<HTMLInputElement>) {
     const { newItem } = this.state
     const { key } = event
     const isEnterKeyPressed = key === 'Enter'
@@ -176,6 +163,7 @@ class Todo extends React.Component<{}, TodoState> {
         <NewItem
           handleNewItemInputOnChange={this.handleNewItemInputOnChange}
           handleNewItemInputOnBlur={this.handleNewItemInputOnBlur}
+          handleNewItemInputOnKeyUp={this.handleNewItemInputOnKeyUp}
           setNewItemInputRef={this.setNewItemInputRef}
         />
       </div>

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { BaseSyntheticEvent } from 'react'
+import { ChangeEvent, MouseEvent } from 'react'
 import './index.scss'
 
 const List = ({
@@ -11,10 +11,10 @@ const List = ({
   setListItemEditInputRef,
   items
 }: {
-  handleListItemEditOnChange: (event: BaseSyntheticEvent) => void;
-  handleListItemComplete: (event: BaseSyntheticEvent) => void;
-  handleListItemRemove: (event: BaseSyntheticEvent) => void;
-  handleListItemRemovedRestore: (event: BaseSyntheticEvent) => void;
+  handleListItemEditOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleListItemComplete: (event: MouseEvent<HTMLDivElement>) => void;
+  handleListItemRemove: (event: MouseEvent<HTMLDivElement>) => void;
+  handleListItemRemovedRestore: (event: MouseEvent<HTMLDivElement>) => void;
   setListItemEditInputRef: (element: HTMLInputElement | null) => void;
   items: {
     completed: (string | undefined)[];

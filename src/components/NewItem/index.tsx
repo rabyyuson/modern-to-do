@@ -1,12 +1,14 @@
-import { BaseSyntheticEvent } from 'react'
+import { ChangeEvent, FocusEvent, KeyboardEvent } from 'react'
 
 const NewItem = ({
   handleNewItemInputOnChange,
   handleNewItemInputOnBlur,
+  handleNewItemInputOnKeyUp,
   setNewItemInputRef,
 }: {
-  handleNewItemInputOnChange: (event: BaseSyntheticEvent) => void;
-  handleNewItemInputOnBlur: (event: BaseSyntheticEvent) => void;
+  handleNewItemInputOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleNewItemInputOnBlur: (event: FocusEvent<HTMLInputElement>) => void;
+  handleNewItemInputOnKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   setNewItemInputRef: (element: HTMLInputElement | null) => void;
 }) => {
   return (
@@ -19,6 +21,7 @@ const NewItem = ({
         <input
           ref={setNewItemInputRef}
           type="text"
+          onKeyUp={handleNewItemInputOnKeyUp}
           onChange={handleNewItemInputOnChange}
           onBlur={handleNewItemInputOnBlur}
         />
