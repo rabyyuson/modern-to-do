@@ -1,4 +1,8 @@
-import { ChangeEvent, FocusEvent, KeyboardEvent } from 'react'
+import {
+  ChangeEvent,
+  FocusEvent,
+  KeyboardEvent
+} from 'react'
 
 const NewItem = ({
   handleNewItemInputOnChange,

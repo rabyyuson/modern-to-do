@@ -1,4 +1,9 @@
-import React, { BaseSyntheticEvent, ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent } from 'react'
+import React, {
+  BaseSyntheticEvent,
+  ChangeEvent,
+  FocusEvent,
+  KeyboardEvent
+} from 'react'
 import { TodoState } from '../interfaces'
 import Calendar from '../Calendar'
 import List from '../List'
@@ -14,12 +19,12 @@ class Todo extends React.Component<{}, TodoState> {
     this.handleNewItemInputOnChange = this.handleNewItemInputOnChange.bind(this)
     this.handleNewItemInputOnBlur = this.handleNewItemInputOnBlur.bind(this)
     this.handleNewItemInputOnKeyUp = this.handleNewItemInputOnKeyUp.bind(this)
-    this.handleListItemEditOnChange = this.handleListItemEditOnChange.bind(this)
+    this.handleListItemEditOnKeyUp = this.handleListItemEditOnKeyUp.bind(this)
     this.handleListItemComplete = this.handleListItemComplete.bind(this)
     this.handleListItemRemove = this.handleListItemRemove.bind(this)
     this.handleListItemRemovedRestore = this.handleListItemRemovedRestore.bind(this)
 
-    this.addTodoItem = this.addTodoItem.bind(this)
+    this.addNewItem = this.addNewItem.bind(this)
     this.setListItemEditInputRef = this.setListItemEditInputRef.bind(this)
     this.setNewItemInputRef = this.setNewItemInputRef.bind(this)
 
@@ -36,10 +41,9 @@ class Todo extends React.Component<{}, TodoState> {
     }
   }
 
-  addTodoItem() {
-    const { newItem } = this.state
+  addNewItem({ newItem }: { newItem: string }) {
     const { newItemInput } = this
-    if (!newItem || !newItemInput) {
+    if (!newItemInput) {
       return
     }
 
@@ -57,8 +61,7 @@ class Todo extends React.Component<{}, TodoState> {
     newItemInput.value = ''
   }
 
-  handleListItemEditOnChange(event: BaseSyntheticEvent) {
-    console.log(event)
+  handleListItemEditOnKeyUp(event: BaseSyntheticEvent & KeyboardEvent<HTMLInputElement>) {
     const { index } = event.target.dataset
     const { value } = event.target
     const { inProgress, ...rest } = this.state.items
@@ -70,6 +73,14 @@ class Todo extends React.Component<{}, TodoState> {
         ...rest
       }
     })
+
+    const { key } = event
+    const isEnterKeyPressed = key === 'Enter'
+    if (!isEnterKeyPressed) {
+      return
+    }
+
+    this.handleListItemComplete(event)
   }
 
   handleListItemComplete(event: BaseSyntheticEvent) {
@@ -124,7 +135,7 @@ class Todo extends React.Component<{}, TodoState> {
       return
     }
 
-    this.addTodoItem()
+    this.addNewItem({ newItem })
   }
 
   handleNewItemInputOnKeyUp(event: KeyboardEvent<HTMLInputElement>) {
@@ -135,7 +146,7 @@ class Todo extends React.Component<{}, TodoState> {
       return
     }
 
-    this.addTodoItem()
+    this.addNewItem({ newItem })
   }
 
   setListItemEditInputRef(element: HTMLInputElement | null) {
@@ -154,7 +165,7 @@ class Todo extends React.Component<{}, TodoState> {
         <Calendar />
         <List
           items={items}
-          handleListItemEditOnChange={this.handleListItemEditOnChange}
+          handleListItemEditOnKeyUp={this.handleListItemEditOnKeyUp}
           handleListItemComplete={this.handleListItemComplete}
           handleListItemRemove={this.handleListItemRemove}
           handleListItemRemovedRestore={this.handleListItemRemovedRestore}

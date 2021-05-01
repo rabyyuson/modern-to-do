@@ -1,17 +1,16 @@
 import classNames from 'classnames'
-
-import { ChangeEvent, MouseEvent } from 'react'
+import { KeyboardEvent, MouseEvent } from 'react'
 import './index.scss'
 
 const List = ({
-  handleListItemEditOnChange,
+  handleListItemEditOnKeyUp,
   handleListItemComplete,
   handleListItemRemove,
   handleListItemRemovedRestore,
   setListItemEditInputRef,
   items
 }: {
-  handleListItemEditOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleListItemEditOnKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   handleListItemComplete: (event: MouseEvent<HTMLDivElement>) => void;
   handleListItemRemove: (event: MouseEvent<HTMLDivElement>) => void;
   handleListItemRemovedRestore: (event: MouseEvent<HTMLDivElement>) => void;
@@ -48,7 +47,7 @@ const List = ({
                 data-index={index}
                 defaultValue={item}
                 type="text"
-                onChange={handleListItemEditOnChange}
+                onKeyUp={handleListItemEditOnKeyUp}
                 ref={setListItemEditInputRef}
               />
             </div>
