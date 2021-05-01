@@ -72,12 +72,11 @@ class Todo extends React.Component<{}, TodoState> {
       ...rest
     } = this.state.items
 
-    const inProgressEdited = inProgress.slice()
-    inProgressEdited[index] = value
+    inProgress[index] = value
 
     this.setState({
       items: {
-        inProgress: inProgressEdited,
+        inProgress,
         ...rest
       }
     })
