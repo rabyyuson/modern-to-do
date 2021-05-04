@@ -8,6 +8,7 @@ import { TodoState } from '../interfaces'
 import Calendar from '../Calendar'
 import ListNavigation from '../ListNavigation'
 import List from '../List'
+import Footer from '../Footer'
 import './index.scss'
 
 class Todo extends React.Component<{}, TodoState> {
@@ -268,6 +269,7 @@ class Todo extends React.Component<{}, TodoState> {
           setListItemEditInputRef={this.setListItemEditInputRef}
           setNewItemInputRef={this.setNewItemInputRef}
         />
+        <Footer />
       </div>
     )
   }

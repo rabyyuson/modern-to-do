@@ -1,7 +1,7 @@
 .ListNavigation {
   position: absolute;
-  top: 40px;
-  right: 40px;
+  top: 20px;
+  right: 20px;
 
   &-ellipsis {
     position: absolute;
@@ -85,12 +85,5 @@
     .ListNavigation-items {
       display: block;
     }
-  }
-}
-
-@media (max-width: 500px) {
-  .ListNavigation {
-    top: 20px;
-    right: 20px;
   }
 }
