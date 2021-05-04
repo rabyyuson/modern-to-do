@@ -87,3 +87,10 @@
     }
   }
 }
+
+@media (max-width: 500px) {
+  .ListNavigation {
+    top: 20px;
+    right: 20px;
+  }
+}

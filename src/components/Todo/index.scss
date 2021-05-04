@@ -4,3 +4,9 @@
   color: #323232;
   position: relative;
 }
+
+@media (max-width: 500px) {
+  .Todo {
+    padding: 20px;
+  }
+}

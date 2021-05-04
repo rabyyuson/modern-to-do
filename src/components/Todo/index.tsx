@@ -28,6 +28,8 @@ class Todo extends React.Component<{}, TodoState> {
     this.handleListNavigationItemClick = this.handleListNavigationItemClick.bind(this)
 
     this.addNewItem = this.addNewItem.bind(this)
+    this.focusNewItem = this.focusNewItem.bind(this)
+    this.windowClick = this.windowClick.bind(this)
     this.setListItemEditInputRef = this.setListItemEditInputRef.bind(this)
     this.setNewItemInputRef = this.setNewItemInputRef.bind(this)
 
@@ -56,7 +58,8 @@ class Todo extends React.Component<{}, TodoState> {
   }
 
   componentDidMount() {
-    this.newItemInput?.focus()
+    this.focusNewItem()
+    window.addEventListener('click', this.windowClick)
   }
 
   addNewItem({ newItem } : { newItem: string }) {
@@ -78,6 +81,23 @@ class Todo extends React.Component<{}, TodoState> {
     })
 
     newItemInput.value = ''
+  }
+
+  focusNewItem() {
+    this.newItemInput?.focus()
+  }
+
+  windowClick(event: any) {
+    const { open, selected } = this.state.view
+    const listNavigationEllipsis = event.target.closest('.ListNavigation-ellipsis')
+    if (!listNavigationEllipsis && open) {
+      this.setState({
+        view: {
+          open: false,
+          selected,
+        }
+      })
+    }
   }
 
   handleListItemEditOnKeyUp(event: BaseSyntheticEvent & KeyboardEvent<HTMLInputElement>) {
