@@ -5,4 +5,8 @@ export interface TodoState {
     removed: (string | undefined)[];
   };
   newItem: string | undefined;
+  view: {
+    open: boolean;
+    selected: string;
+  }
 }

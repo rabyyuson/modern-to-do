@@ -7,7 +7,6 @@ import React, {
 import { TodoState } from '../interfaces'
 import Calendar from '../Calendar'
 import List from '../List'
-import NewItem from '../NewItem'
 import './index.scss'
 
 class Todo extends React.Component<{}, TodoState> {
@@ -20,10 +19,12 @@ class Todo extends React.Component<{}, TodoState> {
     this.handleNewItemInputOnChange = this.handleNewItemInputOnChange.bind(this)
     this.handleNewItemInputOnBlur = this.handleNewItemInputOnBlur.bind(this)
     this.handleNewItemInputOnKeyUp = this.handleNewItemInputOnKeyUp.bind(this)
+    this.handleListEllipsisClick = this.handleListEllipsisClick.bind(this)
     this.handleListItemEditOnKeyUp = this.handleListItemEditOnKeyUp.bind(this)
     this.handleListItemComplete = this.handleListItemComplete.bind(this)
     this.handleListItemRemove = this.handleListItemRemove.bind(this)
     this.handleListItemRemovedRestore = this.handleListItemRemovedRestore.bind(this)
+    this.handleListViewItemClick = this.handleListViewItemClick.bind(this)
 
     this.addNewItem = this.addNewItem.bind(this)
     this.setListItemEditInputRef = this.setListItemEditInputRef.bind(this)
@@ -34,17 +35,27 @@ class Todo extends React.Component<{}, TodoState> {
 
     this.state = {
       items: {
-        completed: ['Build a modern To Do app'],
+        completed: [
+          'Build a modern To Do app'
+        ],
         inProgress: [
           'Workout for 30 minutes at the gym',
           'Buy groceries (milk, vegetables, fruits, fish)',
           'Clean the house and backyard',
-          'Take the car to the autoshop for an oil change',
+          'Take the car to the auto shop for an oil change',
         ],
         removed: [],
       },
       newItem: '',
+      view: {
+        open: false,
+        selected: 'inProgress',
+      },
     }
+  }
+
+  componentDidMount() {
+    this.newItemInput?.focus()
   }
 
   addNewItem({ newItem } : { newItem: string }) {
@@ -53,13 +64,14 @@ class Todo extends React.Component<{}, TodoState> {
       return
     }
 
-    const { inProgress, ...rest } = this.state.items
+    const { completed, inProgress, removed } = this.state.items
 
     inProgress.push(newItem)
     this.setState({
       items: {
+        completed,
         inProgress,
-        ...rest,
+        removed,
       },
       newItem: '',
     })
@@ -67,16 +79,25 @@ class Todo extends React.Component<{}, TodoState> {
     newItemInput.value = ''
   }
 
+  handleListEllipsisClick(event: BaseSyntheticEvent) {
+    const { open, ...rest } = this.state.view
+    this.setState({ view: {
+      open: true,
+      ...rest
+    }})
+  }
+
   handleListItemEditOnKeyUp(event: BaseSyntheticEvent & KeyboardEvent<HTMLInputElement>) {
     const { index } = event.target.dataset
     const { value } = event.target
-    const { inProgress, ...rest } = this.state.items
+    const { completed, inProgress, removed } = this.state.items
 
     inProgress[index] = value
     this.setState({
       items: {
+        completed,
         inProgress,
-        ...rest
+        removed,
       }
     })
 
@@ -90,7 +111,7 @@ class Todo extends React.Component<{}, TodoState> {
   }
 
   handleListItemComplete(event: BaseSyntheticEvent) {
-    const { completed, inProgress, ...rest } = this.state.items
+    const { completed, inProgress, removed } = this.state.items
 
     const { index } = event.target.dataset
     let currentIndex = index
@@ -107,13 +128,13 @@ class Todo extends React.Component<{}, TodoState> {
       items: {
         completed,
         inProgress,
-        ...rest,
+        removed,
       }
     })
   }
 
   handleListItemRemove(event: BaseSyntheticEvent) {
-    const { inProgress, removed, ...rest } = this.state.items
+    const { completed, inProgress, removed } = this.state.items
 
     const { index } = event.target.dataset
     let currentIndex = index
@@ -128,22 +149,42 @@ class Todo extends React.Component<{}, TodoState> {
     removed.push(inProgress[currentIndex])
     this.setState({
       items: {
+        completed,
         inProgress,
         removed,
-        ...rest
       }
     })
   }
 
   handleListItemRemovedRestore(event: BaseSyntheticEvent) {
-    const { index } = event.target.dataset
-    const { removed, ...rest } = this.state.items
+    const { completed, inProgress, removed } = this.state.items
 
-    removed.splice(index, 1)
+    const { index } = event.target.dataset
+    let currentIndex = index
+    
+    if (!currentIndex) {
+      const iconParent = event.target.closest('.List-in-progress-item-remove')
+      if (iconParent) {
+        currentIndex = iconParent.dataset.index
+      }
+    }
+
+    removed.splice(currentIndex, 1)
     this.setState({
       items: {
+        completed,
+        inProgress,
         removed,
-        ...rest
+      }
+    })
+  }
+
+  handleListViewItemClick(event: BaseSyntheticEvent) {
+    const { viewname } = event.target.dataset
+    this.setState({
+      view: {
+        open: false,
+        selected: viewname,
       }
     })
   }
@@ -182,23 +223,24 @@ class Todo extends React.Component<{}, TodoState> {
   }
 
   render() {
-    const { items } = this.state
+    const { items, view } = this.state
 
     return (
       <div className="Todo">
         <Calendar />
         <List
           items={items}
+          view={view}
+          handleListEllipsisClick={this.handleListEllipsisClick}
           handleListItemEditOnKeyUp={this.handleListItemEditOnKeyUp}
           handleListItemComplete={this.handleListItemComplete}
           handleListItemRemove={this.handleListItemRemove}
           handleListItemRemovedRestore={this.handleListItemRemovedRestore}
-          setListItemEditInputRef={this.setListItemEditInputRef}
-        />
-        <NewItem
+          handleListViewItemClick={this.handleListViewItemClick}
           handleNewItemInputOnChange={this.handleNewItemInputOnChange}
           handleNewItemInputOnBlur={this.handleNewItemInputOnBlur}
           handleNewItemInputOnKeyUp={this.handleNewItemInputOnKeyUp}
+          setListItemEditInputRef={this.setListItemEditInputRef}
           setNewItemInputRef={this.setNewItemInputRef}
         />
       </div>
