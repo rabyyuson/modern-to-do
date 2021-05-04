@@ -1,17 +1,9 @@
-const Calendar = () => {
-  const days = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-  ]
+import './index.scss'
 
+const Calendar = () => {
   const now = new Date()
   const today = {
-    day: (days[now.getDay()] || '').slice(0,3),
+    day: (now.toLocaleString('en-US', { month: 'long' }) || '').slice(0,3),
     date: now.getDate()
   }
 

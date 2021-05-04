@@ -8,6 +8,7 @@ import { TodoState } from '../interfaces'
 import Calendar from '../Calendar'
 import List from '../List'
 import NewItem from '../NewItem'
+import './index.scss'
 
 class Todo extends React.Component<{}, TodoState> {
   listItemEditInput: HTMLInputElement | null;
@@ -33,15 +34,20 @@ class Todo extends React.Component<{}, TodoState> {
 
     this.state = {
       items: {
-        completed: [],
-        inProgress: [],
+        completed: ['Build a modern To Do app'],
+        inProgress: [
+          'Workout for 30 minutes at the gym',
+          'Buy groceries (milk, vegetables, fruits, fish)',
+          'Clean the house and backyard',
+          'Take the car to the autoshop for an oil change',
+        ],
         removed: [],
       },
       newItem: '',
     }
   }
 
-  addNewItem({ newItem }: { newItem: string }) {
+  addNewItem({ newItem } : { newItem: string }) {
     const { newItemInput } = this
     if (!newItemInput) {
       return
@@ -85,9 +91,18 @@ class Todo extends React.Component<{}, TodoState> {
 
   handleListItemComplete(event: BaseSyntheticEvent) {
     const { completed, inProgress, ...rest } = this.state.items
-    const { index } = event.target.dataset
 
-    completed.push(inProgress[index])
+    const { index } = event.target.dataset
+    let currentIndex = index
+    
+    if (!currentIndex) {
+      const iconParent = event.target.closest('.List-in-progress-item-complete')
+      if (iconParent) {
+        currentIndex = iconParent.dataset.index
+      }
+    }
+
+    completed.push(inProgress[currentIndex])
     this.setState({
       items: {
         completed,
@@ -98,10 +113,19 @@ class Todo extends React.Component<{}, TodoState> {
   }
 
   handleListItemRemove(event: BaseSyntheticEvent) {
-    const { index } = event.target.dataset
     const { inProgress, removed, ...rest } = this.state.items
 
-    removed.push(inProgress[index])
+    const { index } = event.target.dataset
+    let currentIndex = index
+    
+    if (!currentIndex) {
+      const iconParent = event.target.closest('.List-in-progress-item-remove')
+      if (iconParent) {
+        currentIndex = iconParent.dataset.index
+      }
+    }
+
+    removed.push(inProgress[currentIndex])
     this.setState({
       items: {
         inProgress,

@@ -1,0 +1,38 @@
+$iconColor: #3D82EB;
+
+.Calendar {
+  display: flex;
+  flex-direction: row;
+
+  &-icon {
+    text-align: center;
+    text-transform: uppercase;
+
+    &-day {
+      background-color: $iconColor;
+      padding: 3px 6px;
+      border-radius: 6px 6px 0 0;
+      font-weight: bold;
+      font-size: 10px;
+      color: #fff;
+    }
+
+    &-date {
+      border-bottom: 2px solid $iconColor;
+      border-left: 2px solid $iconColor;
+      border-right: 2px solid $iconColor;
+      border-radius: 0 0 6px 6px;
+      background-color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+
+  &-label {
+    font-size: 28px;
+    margin: 0 0 0 20px;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+  }
+}
