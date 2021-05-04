@@ -39,3 +39,13 @@
     }
   }
 }
+
+@media (max-width: 800px) {
+  .NewItem {
+    &-input {
+      input {
+        padding: 0;
+      }
+    }
+  }
+}
