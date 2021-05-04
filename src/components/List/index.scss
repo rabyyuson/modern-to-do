@@ -16,7 +16,6 @@
       width: 100%;
       display: flex;
       flex-direction: row;
-      padding: 15px 20px 5px 20px;
       border-bottom: 1px solid #EDEDED;
 
       &:last-child {
@@ -36,6 +35,8 @@
 
   &-completed {
     &-item {
+      padding: 15px 20px 11px 20px;
+
       &-check {
         padding: 0 5px;
       }
@@ -53,6 +54,8 @@
 
   &-in-progress {
     &-item {
+      padding: 15px 20px 5px 20px;
+      
       &:hover {
         cursor: pointer;
         background: #FFFFFF;
@@ -111,6 +114,8 @@
 
   &-removed {
     &-item {
+      padding: 15px 20px 11px 20px;
+
       &-restore {
         padding: 0 5px;
         cursor: pointer;

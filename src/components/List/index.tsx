@@ -41,8 +41,6 @@ const List = ({
   const { open, selected } = view
   const { completed, inProgress, removed } = items
 
-  console.log(Object.getOwnPropertyNames(items))
-
   return (
     <div className="List">
       <div className={[
