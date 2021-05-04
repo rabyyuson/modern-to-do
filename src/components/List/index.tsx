@@ -5,12 +5,10 @@ import './index.scss'
 const List = ({
   items,
   view,
-  handleListEllipsisClick,
   handleListItemEditOnKeyUp,
   handleListItemComplete,
   handleListItemRemove,
   handleListItemRemovedRestore,
-  handleListViewItemClick,
   handleNewItemInputOnChange,
   handleNewItemInputOnBlur,
   handleNewItemInputOnKeyUp,
@@ -26,65 +24,21 @@ const List = ({
     open: boolean;
     selected: string;
   };
-  handleListEllipsisClick: (event: MouseEvent<HTMLDivElement>) => void;
   handleListItemEditOnKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   handleListItemComplete: (event: MouseEvent<HTMLDivElement>) => void;
   handleListItemRemove: (event: MouseEvent<HTMLDivElement>) => void;
   handleListItemRemovedRestore: (event: MouseEvent<HTMLDivElement>) => void;
-  handleListViewItemClick: (event: MouseEvent<HTMLLIElement>) => void;
   handleNewItemInputOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleNewItemInputOnBlur: (event: FocusEvent<HTMLInputElement>) => void;
   handleNewItemInputOnKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   setListItemEditInputRef: (element: HTMLInputElement | null) => void;
   setNewItemInputRef: (element: HTMLInputElement | null) => void;
 }) => {
-  const { open, selected } = view
+  const { selected } = view
   const { completed, inProgress, removed } = items
 
   return (
     <div className="List">
-      <div className={[
-        "List-views",
-        open && "List-views--open",
-      ]
-        .filter(className => Boolean(className))
-        .join(" ")}
-      >
-        <div
-          className="List-views-ellipsis"
-          onClick={handleListEllipsisClick}
-        >
-          <div className="List-views-ellipsis--default">
-            <svg width="19" height="5" viewBox="0 0 19 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="2.83337" cy="2.5" r="2.5" fill="#C4C4C4"/>
-              <circle cx="9.5" cy="2.5" r="2.5" fill="#C4C4C4"/>
-              <circle cx="16.1667" cy="2.5" r="2.5" fill="#C4C4C4"/>
-            </svg>
-          </div>
-          <div className="List-views-ellipsis--hovered">
-            <svg width="19" height="5" viewBox="0 0 19 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="2.83337" cy="2.5" r="2.5" fill="#4E4E4E"/>
-              <circle cx="9.5" cy="2.5" r="2.5" fill="#4E4E4E"/>
-              <circle cx="16.1667" cy="2.5" r="2.5" fill="#4E4E4E"/>
-            </svg>
-          </div>
-        </div>
-        <ul className="List-views-items">
-          {Object.getOwnPropertyNames(items).map(viewName => 
-            <li
-              data-viewname={viewName}
-              key={viewName}
-              className={[
-                "List-views-items-name",
-                (selected === viewName) && "List-views-items-name--selected"
-              ]
-                .filter(className => Boolean(className))
-                .join(" ")}
-              onClick={handleListViewItemClick}
-            >{viewName === 'inProgress' ? 'in progress' : viewName}</li>
-          )}
-        </ul>
-      </div>
       <ul className={[
           "List-in-progress",
           (selected === 'inProgress') && "List-in-progress--show"

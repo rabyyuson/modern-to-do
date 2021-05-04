@@ -6,6 +6,7 @@ import React, {
 } from 'react'
 import { TodoState } from '../interfaces'
 import Calendar from '../Calendar'
+import ListNavigation from '../ListNavigation'
 import List from '../List'
 import './index.scss'
 
@@ -19,12 +20,12 @@ class Todo extends React.Component<{}, TodoState> {
     this.handleNewItemInputOnChange = this.handleNewItemInputOnChange.bind(this)
     this.handleNewItemInputOnBlur = this.handleNewItemInputOnBlur.bind(this)
     this.handleNewItemInputOnKeyUp = this.handleNewItemInputOnKeyUp.bind(this)
-    this.handleListEllipsisClick = this.handleListEllipsisClick.bind(this)
     this.handleListItemEditOnKeyUp = this.handleListItemEditOnKeyUp.bind(this)
     this.handleListItemComplete = this.handleListItemComplete.bind(this)
     this.handleListItemRemove = this.handleListItemRemove.bind(this)
     this.handleListItemRemovedRestore = this.handleListItemRemovedRestore.bind(this)
-    this.handleListViewItemClick = this.handleListViewItemClick.bind(this)
+    this.handleListNavigationEllipsisClick = this.handleListNavigationEllipsisClick.bind(this)
+    this.handleListNavigationItemClick = this.handleListNavigationItemClick.bind(this)
 
     this.addNewItem = this.addNewItem.bind(this)
     this.setListItemEditInputRef = this.setListItemEditInputRef.bind(this)
@@ -77,14 +78,6 @@ class Todo extends React.Component<{}, TodoState> {
     })
 
     newItemInput.value = ''
-  }
-
-  handleListEllipsisClick(event: BaseSyntheticEvent) {
-    const { open, ...rest } = this.state.view
-    this.setState({ view: {
-      open: true,
-      ...rest
-    }})
   }
 
   handleListItemEditOnKeyUp(event: BaseSyntheticEvent & KeyboardEvent<HTMLInputElement>) {
@@ -179,7 +172,15 @@ class Todo extends React.Component<{}, TodoState> {
     })
   }
 
-  handleListViewItemClick(event: BaseSyntheticEvent) {
+  handleListNavigationEllipsisClick(event: BaseSyntheticEvent) {
+    const { open, ...rest } = this.state.view
+    this.setState({ view: {
+      open: true,
+      ...rest
+    }})
+  }
+
+  handleListNavigationItemClick(event: BaseSyntheticEvent) {
     const { viewname } = event.target.dataset
     this.setState({
       view: {
@@ -228,15 +229,19 @@ class Todo extends React.Component<{}, TodoState> {
     return (
       <div className="Todo">
         <Calendar />
+        <ListNavigation
+          items={items}
+          view={view}
+          handleListNavigationEllipsisClick={this.handleListNavigationEllipsisClick}
+          handleListNavigationItemClick={this.handleListNavigationItemClick}
+        />
         <List
           items={items}
           view={view}
-          handleListEllipsisClick={this.handleListEllipsisClick}
           handleListItemEditOnKeyUp={this.handleListItemEditOnKeyUp}
           handleListItemComplete={this.handleListItemComplete}
           handleListItemRemove={this.handleListItemRemove}
           handleListItemRemovedRestore={this.handleListItemRemovedRestore}
-          handleListViewItemClick={this.handleListViewItemClick}
           handleNewItemInputOnChange={this.handleNewItemInputOnChange}
           handleNewItemInputOnBlur={this.handleNewItemInputOnBlur}
           handleNewItemInputOnKeyUp={this.handleNewItemInputOnKeyUp}
