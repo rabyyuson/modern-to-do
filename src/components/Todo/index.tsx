@@ -4,7 +4,7 @@ import React, {
   FocusEvent,
   KeyboardEvent
 } from 'react'
-import { TodoState } from '../interfaces'
+import { TodoState } from '../../interfaces'
 import Calendar from '../Calendar'
 import ListNavigation from '../ListNavigation'
 import List from '../List'
