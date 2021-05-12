@@ -3,7 +3,7 @@ import './index.scss'
 const Calendar = () => {
   const now = new Date()
   const today = {
-    day: (now.toLocaleString('en-US', { month: 'long' }) || '').slice(0,3),
+    day: now.toLocaleString('en-US', { month: 'short' }),
     date: now.getDate()
   }
 

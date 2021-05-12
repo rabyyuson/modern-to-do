@@ -1,5 +1,4 @@
 import Todo from './components/Todo'
-import './App.scss'
 
 const App = () => {
   return (
