@@ -5,12 +5,12 @@ import './index.scss'
 const List = ({
   items,
   view,
-  handleListItemEditOnKeyUp,
   handleListItemComplete,
+  handleListItemEditOnKeyUp,
   handleListItemRemove,
   handleListItemRemovedRestore,
-  handleNewItemInputOnChange,
   handleNewItemInputOnBlur,
+  handleNewItemInputOnChange,
   handleNewItemInputOnKeyUp,
   setListItemEditInputRef,
   setNewItemInputRef,
@@ -24,12 +24,12 @@ const List = ({
     open: boolean;
     selected: string;
   };
-  handleListItemEditOnKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   handleListItemComplete: (event: MouseEvent<HTMLDivElement>) => void;
+  handleListItemEditOnKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   handleListItemRemove: (event: MouseEvent<HTMLDivElement>) => void;
   handleListItemRemovedRestore: (event: MouseEvent<HTMLDivElement>) => void;
-  handleNewItemInputOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleNewItemInputOnBlur: (event: FocusEvent<HTMLInputElement>) => void;
+  handleNewItemInputOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleNewItemInputOnKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   setListItemEditInputRef: (element: HTMLInputElement | null) => void;
   setNewItemInputRef: (element: HTMLInputElement | null) => void;

@@ -6,13 +6,13 @@ import {
 import './index.scss'
 
 const NewItem = ({
-  handleNewItemInputOnChange,
   handleNewItemInputOnBlur,
+  handleNewItemInputOnChange,
   handleNewItemInputOnKeyUp,
   setNewItemInputRef,
 }: {
-  handleNewItemInputOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleNewItemInputOnBlur: (event: FocusEvent<HTMLInputElement>) => void;
+  handleNewItemInputOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleNewItemInputOnKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   setNewItemInputRef: (element: HTMLInputElement | null) => void;
 }) => {
