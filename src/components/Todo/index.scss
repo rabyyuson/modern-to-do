@@ -1,12 +1,8 @@
 .Todo {
-  padding: 40px;
+  padding: 20px;
+  max-width: 75%;
+  margin: 0 auto;
   font-family: Arial, Helvetica, sans-serif;
   color: #323232;
   position: relative;
-}
-
-@media (max-width: 800px) {
-  .Todo {
-    padding: 20px;
-  }
 }
